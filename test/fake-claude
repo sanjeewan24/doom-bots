@@ -1,0 +1,24 @@
+#!/usr/bin/env node
+// Stand-in for `claude` used to test the DOOM-Bots server without calling the API.
+const rl = require('readline');
+if (process.argv.includes('--help')) {
+  console.log('Usage: claude\n  --agent <agent>\n  --effort <level>\n  --forward-subagent-text\n  --dangerously-skip-permissions\n  --resume');
+  process.exit(0);
+}
+const sid = 'fake-session-1';
+const out = o => console.log(JSON.stringify(Object.assign({ session_id: sid }, o)));
+out({ type: 'system', subtype: 'init', model: 'claude-sonnet-4-6', tools: [] });
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+rl.createInterface({ input: process.stdin }).on('line', async line => {
+  let m; try { m = JSON.parse(line); } catch (e) { return; }
+  const text = m.message.content[0].text;
+  out({ type: 'assistant', parent_tool_use_id: null, message: { content: [{ type: 'text', text: 'Got it: **' + text + '**. Starting the line.' }] } });
+  await sleep(150);
+  out({ type: 'assistant', parent_tool_use_id: null, message: { content: [{ type: 'tool_use', id: 'tu1', name: 'Agent', input: { subagent_type: 'spec-writer', description: 'Write specs' } }, { type: 'tool_use', id: 'tu2', name: 'Agent', input: { subagent_type: 'builder', description: 'Build it' } }] } });
+  await sleep(150);
+  out({ type: 'assistant', parent_tool_use_id: 'tu1', message: { content: [{ type: 'tool_use', id: 'x1', name: 'Write', input: { file_path: '.doombots/specs/PRD.md' } }] } });
+  await sleep(150);
+  out({ type: 'user', parent_tool_use_id: null, message: { content: [{ type: 'tool_result', tool_use_id: 'tu1', content: 'six files written' }] } });
+  out({ type: 'user', parent_tool_use_id: null, message: { content: [{ type: 'tool_result', tool_use_id: 'tu2', is_error: true, content: 'tests failed' }] } });
+  out({ type: 'result', subtype: 'success', is_error: false, duration_ms: 1234, total_cost_usd: 0.01, result: 'ok' });
+});

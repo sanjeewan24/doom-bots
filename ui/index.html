@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DOOM-Bots</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' fill='%23140d0d'/%3E%3Cpath fill='%23ff5a36' d='M3 3h10v2H3zM3 7h10v2H3zM3 11h6v2H3z'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top">
+  <div class="brand">DOOM<span>-</span>BOTS</div>
+  <div class="proj" id="proj" title=""></div>
+  <div class="spacer"></div>
+  <nav class="views" id="views" aria-label="View mode"><button data-view="chat" class="on">Chat</button><button data-view="pov">POV</button><button data-view="diagram">Diagram</button></nav>
+  <div class="demo" id="demoBox" hidden><button class="chip" id="demoA" title="Watch a scripted run: bug fix, fix loop, merge">Demo</button><button class="chip" id="demoB" title="Scripted run that ends in an escalation">Demo: escalate</button><button class="chip stopd" id="demoStop" hidden>■ Stop demo</button></div>
+  <span class="badge" id="modeBadge" hidden>YOLO</span>
+  <span class="pill" id="pill" data-state="stopped"><i></i><b id="pillText">offline</b></span>
+  <button class="btn ghost" id="btnNew" title="Start a fresh Marcus session">New session</button>
+  <button class="btn ghost danger" id="btnStop" title="Stop Marcus">Stop</button>
+</header>
+
+<nav class="tabs-m" id="mobileTabs">
+  <button data-pane="chat" class="on">Chat</button>
+  <button data-pane="side">Workforce</button>
+</nav>
+
+<main class="grid">
+  <section class="stage" id="stage">
+    <div class="vhost" id="povHost"><canvas id="povCanvas"></canvas></div>
+    <div class="vhost" id="diagHost"></div>
+    <div class="dpanel" id="dpanel" hidden><div class="pbody"></div><button class="chip pclose">Close</button></div>
+  </section>
+  <section class="chat" id="paneChat">
+    <div class="msgs" id="msgs" aria-live="polite">
+      <div class="empty" id="empty">
+        <h2>Tell Marcus about the project.</h2>
+        <p>New build, bug fix, a feature, or a codebase he has never seen. He picks the route and the workforce takes over.</p>
+      </div>
+    </div>
+    <div class="typing" id="typing" hidden><span></span><span></span><span></span><em id="typingText">Marcus is working</em></div>
+    <form class="composer" id="form">
+      <textarea id="input" rows="2" placeholder="Describe the project or the change…  (Enter to send, Shift+Enter for a new line)" autofocus></textarea>
+      <div class="actions">
+        <button type="button" class="chip" id="qStatus">Status</button>
+        <button type="button" class="chip ok" id="qApprove">Approve</button>
+        <button type="button" class="chip warn" id="qReject">Reject…</button>
+        <div class="spacer"></div>
+        <button type="submit" class="btn primary" id="send">Send</button>
+      </div>
+    </form>
+  </section>
+
+  <aside class="side" id="paneSide">
+    <div class="tabs">
+      <button data-tab="agents" class="on">Workforce</button>
+      <button data-tab="feed">Activity</button>
+      <button data-tab="files">Files</button>
+    </div>
+    <div class="tab" id="tab-agents"><div class="roster" id="roster"></div></div>
+    <div class="tab" id="tab-feed" hidden><div class="feed" id="feed"></div></div>
+    <div class="tab" id="tab-files" hidden>
+      <div class="files-head"><span>.doombots/</span><button class="chip" id="btnRefresh">Refresh</button></div>
+      <ul class="files" id="files"></ul>
+    </div>
+  </aside>
+</main>
+
+<div class="modal" id="modal" hidden>
+  <div class="sheet">
+    <div class="sheet-head"><b id="modalTitle"></b><button class="btn ghost" id="modalClose">Close</button></div>
+    <pre id="modalBody"></pre>
+  </div>
+</div>
+<script src="avatars.js"></script>
+<script src="director.js"></script>
+<script src="pov.js"></script>
+<script src="diagram.js"></script>
+<script src="demo.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

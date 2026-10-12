@@ -1,0 +1,34 @@
+{
+  "name": "doom-bots",
+  "version": "1.0.3",
+  "description": "DOOM-Bots: Marcus and his agentic workforce, launched from any project folder with one command.",
+  "bin": {
+    "doom": "bin/doom.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "license": "MIT",
+  "keywords": [
+    "claude-code",
+    "agents",
+    "multi-agent",
+    "orchestrator",
+    "factory-line",
+    "ai-coding"
+  ],
+  "files": [
+    "bin",
+    "lib",
+    "ui",
+    "agents",
+    "skills",
+    "test",
+    "README.md",
+    "LICENSE",
+    "THIRD-PARTY.md"
+  ],
+  "scripts": {
+    "test": "node test/guard.test.js"
+  }
+}
