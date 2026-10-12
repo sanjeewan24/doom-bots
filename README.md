@@ -49,23 +49,7 @@ A chat opens in your browser. Tell Marcus what you need.
 
 ## The line
 
-```mermaid
-flowchart LR
-    You([You]) --> M{{Marcus}}
-    M --> Scout --> Sage --> Forge
-    Forge --> R[Warden · Iris · Muse · Cato]
-    R -- CHANGES --> Forge
-    R -- PASS --> T{Themis}
-    T -- low risk --> Main([main])
-    T -- risky --> You
-
-    classDef a fill:#2a1a14,stroke:#ff5a36,color:#fff
-    classDef b fill:#14202a,stroke:#4aa8e0,color:#fff
-    classDef c fill:#14261c,stroke:#5ac88c,color:#fff
-    class M a
-    class Scout,Sage,Forge b
-    class R,T c
-```
+<div align="center"><img src="docs/img/line.svg" alt="The factory line" width="520"></div>
 
 Reviewers send CHANGES back to Forge, **2 loops max**. Risky changes wait for your **Approve**.
 
