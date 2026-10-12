@@ -1,75 +1,163 @@
-# DOOM-Bots
+<div align="center">
 
-Marcus and his agentic workforce, launched from any project folder.
+# DOOM-BOTS
 
-## Install (once)
+**Open a folder. Run `doom`. Tell Marcus what you want.**<br>
+**Nine AI agents build it.**
 
+[![Node](https://img.shields.io/badge/node-%E2%89%A518-3c873a?style=flat-square&logo=node.js&logoColor=white)](https://nodejs.org)
+[![Claude Code](https://img.shields.io/badge/claude%20code-required-d97757?style=flat-square)](https://claude.com/claude-code)
+[![Model](https://img.shields.io/badge/model-sonnet%204.6-ff5a36?style=flat-square)](#)
+[![Dependencies](https://img.shields.io/badge/dependencies-0-5ac88c?style=flat-square)](#)
+[![Platform](https://img.shields.io/badge/win%20%C2%B7%20mac%20%C2%B7%20linux-4aa8e0?style=flat-square)](#)
+[![License](https://img.shields.io/badge/license-MIT-e0b84a?style=flat-square)](LICENSE)
+
+<img src="docs/img/pov-merge.png" alt="DOOM-Bots POV view" width="860">
+
+</div>
+
+<br>
+
+## Run it
+
+```bash
+git clone https://github.com/sanjeewan24/doom-bots
+cd doom-bots && npm link
 ```
-git clone https://github.com/<you>/doom-bots
-cd doom-bots
-npm link
-```
 
-`npm link` puts the `doom` command on your PATH. The first `doom` run also copies the nine agents into `%USERPROFILE%\.claude\agents` and the skill packs into `%USERPROFILE%\.claude\doombots\skills`. Run `doom install` after you edit any agent or skill file here.
-
-Needs: Node 18+, Claude Code on PATH (`claude`), and the `caveman` and `ponytail` skills installed in Claude Code.
-
-## Use
-
-```
-cd <any project folder>
+```bash
+cd your-project
 doom
 ```
 
-A browser tab opens with the chat. Tell Marcus about the project. That is all. Options: `doom --new` (fresh session), `doom --safe` (keep Claude Code's permission prompts), `doom --port N`, `doom --no-open`.
+A chat opens in your browser. Tell Marcus what you need.
 
-Marcus sorts the request and picks the route:
+**Needs:** Node 18+ &nbsp;·&nbsp; [Claude Code](https://claude.com/claude-code) on PATH &nbsp;·&nbsp; `caveman` and `ponytail` skills
 
-| Request | Route |
+<br>
+
+## What you can ask
+
+| | |
 |---|---|
-| New project | Sage, Forge, 4 reviewers, Themis |
-| Bug fix | Scout, Sage (short fix spec), Forge, 4 reviewers, Themis |
-| Feature on existing code | Scout, Sage (plan for the change only), Forge, 4 reviewers, Themis |
-| Codebase Marcus does not know | Scout (full map), Sage, Forge, 4 reviewers, Themis |
+| 🆕 **New project** | Marcus plans it, the crew builds it |
+| 🐛 **Bug fix** | Scout finds it, Forge fixes it |
+| ✨ **Feature** | Scout reads the code, Sage plans the change |
+| 🔍 **Unknown codebase** | Scout maps it first |
 
-Reviewers send CHANGES back to Forge (2 loops max, then you decide). Themis approves low risk changes for Marcus to merge. Anything risky waits for you: press Approve in the chat (or type `approve`), or Reject with a reason.
+<br>
 
-## Views
+## The line
 
-Switch in the header (or Alt+1, Alt+2, Alt+3):
+```mermaid
+flowchart LR
+    You([You]) --> M{{Marcus}}
+    M --> Scout --> Sage --> Forge
+    Forge --> R[Warden · Iris · Muse · Cato]
+    R -- CHANGES --> Forge
+    R -- PASS --> T{Themis}
+    T -- low risk --> Main([main])
+    T -- risky --> You
 
-- **Chat**: the chat plus the workforce list, activity feed and `.doombots/` files.
-- **POV**: a live pixel-art HQ where the agents walk, work and hand things to each other. Click things.
-- **Diagram**: the factory line as a flow chart. Nodes light up, traffic pulses along the edges, click a node for details.
-
-POV and Diagram show real events only. The **Demo** buttons play a scripted run (a bug fix with a fix loop, ending in a merge or an escalation) so you can watch without spending tokens. **Stop demo** ends it and clears the scene.
-
-## Roster
-
-Marcus (orchestrator), Scout (codebase mapper), Sage (spec writer), Forge (builder), Warden (security), Iris (UX), Muse (UI design), Cato (code), Themis (approver). All run on Sonnet 4.6 at medium effort with caveman and ponytail. No worker cap.
-
-## Marcus is locked to orchestrating
-
-`doom` starts Claude Code with a PreToolUse hook (`lib/guard.js`). It blocks Marcus from editing files and from any shell command that is not git, listing, reading or writing under `.doombots/`. Workers are not restricted. Tests: `node test/guard.test.js`.
-
-## What goes where
-
-Everything DOOM-Bots writes lives in `.doombots/` inside the project:
-
-```
-.doombots/PROJECT_MAP.md      Scout's map (existing projects)
-.doombots/BUG_BRIEF.md        Scout's bug brief
-.doombots/specs/              the six spec files, or FIX_SPEC.md for a bug
-.doombots/reports/            security, ux, ui, code reviews and Themis's decision
-.doombots/events.jsonl        Marcus's event log (the UI tails it)
-.doombots/state.json          where the run stopped
-.doombots/ui-log.jsonl        chat history for the UI
-.doombots/session.json        Claude session id, used to resume
+    classDef a fill:#2a1a14,stroke:#ff5a36,color:#fff
+    classDef b fill:#14202a,stroke:#4aa8e0,color:#fff
+    classDef c fill:#14261c,stroke:#5ac88c,color:#fff
+    class M a
+    class Scout,Sage,Forge b
+    class R,T c
 ```
 
-Code changes happen only on `factory/<task>` branches. Add `.doombots/` to the project's `.gitignore` if you do not want it committed.
+Reviewers send CHANGES back to Forge, **2 loops max**. Risky changes wait for your **Approve**.
 
-## Yolo mode
+<br>
 
-By default Marcus runs with `--dangerously-skip-permissions`: no permission prompts, any shell command. The server listens on 127.0.0.1 only, and every request needs the random token in the URL printed in the terminal. Do not share that URL. The agents' read-only rules are instructions, not hard blocks. Use `doom --safe` to get prompts back.
+## The crew
 
+| | | |
+|:-:|---|---|
+| <img src="docs/img/avatar-marcus.png" width="48"> | **Marcus** | Orchestrator. Never writes code |
+| <img src="docs/img/avatar-scout.png" width="48"> | **Scout** | Maps existing code |
+| <img src="docs/img/avatar-sage.png" width="48"> | **Sage** | Writes the specs |
+| <img src="docs/img/avatar-forge.png" width="48"> | **Forge** | Builds and fixes |
+| <img src="docs/img/avatar-warden.png" width="48"> | **Warden** | Security review |
+| <img src="docs/img/avatar-iris.png" width="48"> | **Iris** | UX review |
+| <img src="docs/img/avatar-muse.png" width="48"> | **Muse** | UI design review |
+| <img src="docs/img/avatar-cato.png" width="48"> | **Cato** | Code review |
+| <img src="docs/img/avatar-themis.png" width="48"> | **Themis** | Final approval |
+
+<br>
+
+## Three views
+
+Switch in the header, or press **Alt+1 / 2 / 3**.
+
+**Chat** &nbsp;·&nbsp; talk to Marcus, watch the crew
+
+<img src="docs/img/chat.png" alt="Chat view" width="860">
+
+**POV** &nbsp;·&nbsp; the crew at work, live
+
+<img src="docs/img/pov-review.png" alt="POV view" width="860">
+
+**Diagram** &nbsp;·&nbsp; traffic lights up along the line
+
+<img src="docs/img/diagram-loop.png" alt="Diagram view" width="860">
+
+<br>
+
+## Try it free
+
+Hit **Demo** in POV or Diagram. A scripted bug fix plays, no tokens used. **Stop demo** ends it.
+
+<br>
+
+## Commands
+
+| | |
+|---|---|
+| `doom` | Start in this folder |
+| `doom --new` | Fresh session |
+| `doom --safe` | Keep Claude Code permission prompts |
+| `doom --port 4800` | Pick a port |
+| `doom --no-open` | Don't open the browser |
+| `doom install` | Reinstall agents and skills |
+
+<br>
+
+## Safety
+
+- Marcus is **locked out of editing files**. A hook blocks it, so he must delegate
+- Code changes only on `factory/*` branches
+- Runs in **yolo mode** by default. Agents can run any command in your project
+- Server is `127.0.0.1` only, behind a random token
+- `--safe` brings the prompts back
+
+<br>
+
+## Files
+
+Everything lands in `.doombots/` inside your project. Add it to `.gitignore` if you like.
+
+```
+.doombots/
+├─ specs/          specs from Sage
+├─ reports/        reviews and Themis's decision
+├─ events.jsonl    Marcus's log
+└─ state.json      where the run stopped
+```
+
+<br>
+
+## Test
+
+```bash
+npm test
+```
+
+<br>
+
+<div align="center">
+
+MIT · See [THIRD-PARTY.md](THIRD-PARTY.md) for bundled security skills
+
+</div>
